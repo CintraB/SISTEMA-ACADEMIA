@@ -1,12 +1,13 @@
 const express = require("express");
-//const teamsRoutes = require("./teamRoutes.js");
-//const statsRoutes = require("./statsRoutes.js");
+const loginRoutes = require("./loginRoutes.js");
+const professorRoutes = require("./professorRoutes");
+const alunosRoutes = require("./alunoRoutes");
 
 
 const routes = (app) =>{
   app.route("/").get((req,res) => res.status(200).send("API UP"));
 
-  //app.use(express.json(),teamsRoutes,statsRoutes);
+  app.use(express.json(),loginRoutes,professorRoutes,alunosRoutes);
 
 };
 

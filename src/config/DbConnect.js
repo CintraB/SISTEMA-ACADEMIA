@@ -1,4 +1,4 @@
-const Pool = require('pg').Poll;
+const Pool = require('pg').Pool;
 
 const pool = new Pool({
     user: process.env.USER,
