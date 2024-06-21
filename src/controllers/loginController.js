@@ -3,13 +3,13 @@ const pool = require("../config/dbConnect.js");
 
 class LoginController {
     static Logar = async (req, res) => {
-        const nomeLogin = req.body.nome;
-        const senhaLogin = req.body.senha;
+        const { nome,senha } = req.body;
+        
         let usuarioEncontrado = {};
         try {
 
             const query = "SELECT * FROM usuario WHERE nome = $1 AND senha = $2";
-            const { rows } = await pool.query(query, [nomeLogin, senhaLogin]);
+            const { rows } = await pool.query(query, [nome, senha]);
 
             //verificando consulta nao encontrada
             if (rows.length === 0) {

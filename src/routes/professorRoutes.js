@@ -8,9 +8,13 @@ const professoresRoutes = express.Router();
 
 const ROTAS = {
     ALUNOS: "/alunos",
-    ALUNO_ID: "/aluno/:id"
+    PROFESSORES: "/professores",
+    ALUNO_ID: "/aluno/:id",
+    PROFESSORES_ID: "/professor/:id"
    };
 
 professoresRoutes.get(ROTAS.ALUNOS,ProfessorController.ListarAlunos);
+professoresRoutes.get(ROTAS.PROFESSORES,ProfessorController.ListarProfessores);
+professoresRoutes.post(ROTAS.ALUNOS,ProfessorController.CadastrarAlunos);
 
 module.exports = professoresRoutes;
