@@ -10,11 +10,14 @@ const ROTAS = {
     ALUNOS: "/alunos",
     PROFESSORES: "/professores",
     ALUNO_ID: "/aluno/:id",
-    PROFESSORES_ID: "/professor/:id"
+    PROFESSORES_ID: "/professor/:id",
+    TREINO: "/treino"
    };
 
 professoresRoutes.get(ROTAS.ALUNOS,ProfessorController.ListarAlunos);
-professoresRoutes.get(ROTAS.PROFESSORES,ProfessorController.ListarProfessores);
 professoresRoutes.post(ROTAS.ALUNOS,ProfessorController.CadastrarAlunos);
+professoresRoutes.get(ROTAS.PROFESSORES,ProfessorController.ListarProfessores);
+professoresRoutes.post(ROTAS.PROFESSORES,ProfessorController.CadastrarProfessores);
+professoresRoutes.post(ROTAS.TREINO,ProfessorController.CadastrarTreino);
 
 module.exports = professoresRoutes;

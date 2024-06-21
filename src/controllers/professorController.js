@@ -28,7 +28,7 @@ class ProfessorController {
             //cpf,nome,senha,email,titulo,aluno,professor,ativo => campos tabela aluno // regras de negocio -> aluno sempre true, ativo sempre true, professor sempre falso.
             const valores_usuario = [req.body.cpf, req.body.nome, req.body.senha, req.body.email, req.body.titulo];
 
-            const valida = await validar_aluno(valores_usuario);
+            const valida = await validar_usuario(valores_usuario);
             if (valida) {
                 //verificar cadastro existente
                 const cadastro = await verifica_existencia_usuario(valores_usuario);
@@ -37,9 +37,9 @@ class ProfessorController {
                     const query = 'INSERT INTO usuario(cpf,nome,senha,email,titulo) VALUES ($1,$2,$3,$4,$5);';
                     const values = [cpf, nome, senha, email, titulo];
 
-                    const result = await pool.query(query,values);
+                    const result = await pool.query(query, values);
 
-                    res.status(200).json({message: "Usuario cadastrado com sucesso"});
+                    res.status(200).json({ message: "Usuario cadastrado com sucesso" });
                 } else {
                     res.status(400).json({ error: 'Usuario ja cadastrado' });
                 }
@@ -53,9 +53,50 @@ class ProfessorController {
             res.status(500).json(error);
         }
     }
+
+    static CadastrarProfessores = async (req, res) => {
+        try {
+            //INSERT INTO usuario(cpf,nome,senha,email,titulo,aluno,professor,ativo)
+            const valores_professor = [req.body.cpf, req.body.nome, req.body.senha, req.body.email, req.body.titulo];
+            const valida = await validar_usuario(valores_professor);
+
+            if (valida) {
+                //verificar cadastro existente
+                const cadastro = await verifica_existencia_usuario(valores_professor);
+                if (cadastro) {
+                    const aln = false, prof = true, atv = true;
+                    const [cpf, nome, senha, email, titulo] = valores_professor;
+                    const query = 'INSERT INTO usuario(cpf,nome,senha,email,titulo,aluno,professor,ativo) VALUES ($1,$2,$3,$4,$5,$6,$7,$8);';
+                    const values = [cpf, nome, senha, email, titulo, aln, prof, atv];
+
+                    const result = await pool.query(query, values);
+                    
+                    res.status(200).json({ message: "Professor cadastrado com sucesso" });
+                } else {
+                    res.status(400).json({ error: 'Professor ja cadastrado' });
+                }
+
+            } else {
+                res.status(400).json({ error: 'Dados Invalidos' });
+            }
+
+
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
+    static CadastrarTreino = async (req, res) => {
+        try {
+            //código aqui
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 }
 
-async function validar_aluno(dados_usuario) {
+async function validar_usuario(dados_usuario) {
     //verificar se os campos estão presentes
     if (dados_usuario.every(value => value !== undefined && value !== '')) {
 
