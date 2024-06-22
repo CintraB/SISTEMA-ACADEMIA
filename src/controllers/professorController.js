@@ -70,7 +70,7 @@ class ProfessorController {
                     const values = [cpf, nome, senha, email, titulo, aln, prof, atv];
 
                     const result = await pool.query(query, values);
-                    
+
                     res.status(200).json({ message: "Professor cadastrado com sucesso" });
                 } else {
                     res.status(400).json({ error: 'Professor ja cadastrado' });
@@ -87,11 +87,87 @@ class ProfessorController {
         }
     }
 
-    static CadastrarTreino = async (req, res) => {
+
+    static ListarExercicios = async (req, res) => {
         try {
-            //código aqui
+            //mostrar todos exercicios cadastrados no sistema
+            const result = await pool.query("SELECT * FROM exercicio;");
+
+            res.status(200).json(result.rows);
         } catch (error) {
             res.status(500).json(error);
+        }
+    }
+
+    static CadastrarTreino = async (req, res) => {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+
+            const { id_user, id_professor, exercicios } = req.body;
+
+            // Verificar se os dados estão presentes
+            if (![id_user, id_professor].every(value => value !== undefined && value !== '') ||
+                !Array.isArray(exercicios) ||
+                exercicios.length === 0 ||
+                !exercicios.every(exercicio =>
+                    [exercicio.id_exercicio, exercicio.numero_serie, exercicio.repeticoes, exercicio.carga].every(value => value !== undefined && value !== '')
+                )) {
+                return res.status(400).json({ error: 'Dados inválidos' });
+            }
+
+            // Verifica se o usuário existe
+            const qry = 'SELECT nome, cpf, titulo FROM usuario WHERE ativo = TRUE AND id = $1';
+            const dados = [id_user];
+            const resposta = await client.query(qry, dados);
+
+            // Verifica se o professor existe
+            const query_professor = 'SELECT nome, cpf, titulo FROM usuario WHERE professor = TRUE AND ativo = TRUE AND id = $1';
+            const dados_professor = [id_professor];
+            const resposta_professor = await client.query(query_professor, dados_professor);
+
+            if (resposta.rows.length > 0 && resposta_professor.rows.length > 0) {
+                // Adicionar o início do treino na tabela de treino
+                const consulta = 'INSERT INTO treino(id_aluno, id_professor) VALUES ($1, $2) RETURNING id_treino';
+                const valores_treino = [id_user, id_professor];
+                const result_treino = await client.query(consulta, valores_treino);
+
+                // ID do treino recém-inserido
+                const id_treino = result_treino.rows[0].id_treino;
+
+                // Construir a query dinamicamente para os exercícios
+                let query_exercicios = 'INSERT INTO ex_usuario(id_user, id_exercicio, numero_serie, repeticoes, carga, observacao_ex_usuario) VALUES ';
+                const valores_exercicios = [];
+                let placeholderIndex = 1;
+
+                exercicios.forEach((exercicio) => {
+                    const { id_exercicio, numero_serie, repeticoes, carga, observacao_ex_usuario } = exercicio;
+                    query_exercicios += `($${placeholderIndex++}, $${placeholderIndex++}, $${placeholderIndex++}, $${placeholderIndex++}, $${placeholderIndex++}, $${placeholderIndex++}),`;
+                    valores_exercicios.push(id_user, id_exercicio, numero_serie, repeticoes, carga, observacao_ex_usuario);
+                });
+
+                // Remover a última vírgula
+                query_exercicios = query_exercicios.slice(0, -1);
+
+                // Executar a query para os exercícios
+                await client.query(query_exercicios, valores_exercicios);
+
+                await client.query('COMMIT');
+                res.status(200).json({ message: "Treino cadastrado com sucesso" });
+            } else {
+                await client.query('ROLLBACK');
+                if (resposta.rows.length === 0) {
+                    res.status(400).json({ error: 'Usuário não encontrado' });
+                } else {
+                    res.status(400).json({ error: 'Professor não encontrado ou não ativo' });
+                }
+            }
+
+        } catch (error) {
+            await client.query('ROLLBACK');
+            res.status(500).json(error);
+        } finally {
+            client.release();
         }
     }
 }
