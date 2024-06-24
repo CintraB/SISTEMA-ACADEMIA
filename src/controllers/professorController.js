@@ -1,5 +1,6 @@
 const { query } = require("express");
 const pool = require("../config/dbConnect.js");
+const criarHashComSal = require("../middlewares/HashcomSal.js");
 
 class ProfessorController {
 
@@ -34,8 +35,9 @@ class ProfessorController {
                 const cadastro = await verifica_existencia_usuario(valores_usuario);
                 if (cadastro) {
                     const [cpf, nome, senha, email, titulo] = valores_usuario;
+                    const hashSenha = await criarHashComSal(senha);
                     const query = 'INSERT INTO usuario(cpf,nome,senha,email,titulo) VALUES ($1,$2,$3,$4,$5);';
-                    const values = [cpf, nome, senha, email, titulo];
+                    const values = [cpf, nome, hashSenha, email, titulo];
 
                     const result = await pool.query(query, values);
 
@@ -66,8 +68,9 @@ class ProfessorController {
                 if (cadastro) {
                     const aln = false, prof = true, atv = true;
                     const [cpf, nome, senha, email, titulo] = valores_professor;
+                    const hashSenha = await criarHashComSal(senha);
                     const query = 'INSERT INTO usuario(cpf,nome,senha,email,titulo,aluno,professor,ativo) VALUES ($1,$2,$3,$4,$5,$6,$7,$8);';
-                    const values = [cpf, nome, senha, email, titulo, aln, prof, atv];
+                    const values = [cpf, nome, hashSenha, email, titulo, aln, prof, atv];
 
                     const result = await pool.query(query, values);
 
