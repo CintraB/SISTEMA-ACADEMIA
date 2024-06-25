@@ -13,7 +13,10 @@ const routes = (app) =>{
   
   app.route("/").get((req,res) => res.status(200).send("API UP"));
 
-  app.use(express.json(),loginRoutes,professorRoutes,alunosRoutes);
+  app.use(express.json(),
+  loginRoutes,
+  professorRoutes,
+  alunosRoutes);
 
 };
 
