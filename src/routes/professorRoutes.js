@@ -1,10 +1,9 @@
 const express = require("express");
 const ProfessorController = require("../controllers/professorController.js");
+const autenticadorTokenJwt = require("../middlewares/autenticadorJwt.js");
 const professoresRoutes = express.Router();
-/*pool.query("query aki",(error, results) => {
-    if(error) throw error;
-    res.status(200).json(results.rows);
-})*/
+
+professoresRoutes.use(autenticadorTokenJwt);
 
 const ROTAS = {
     ALUNOS: "/alunos",
