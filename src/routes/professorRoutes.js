@@ -7,6 +7,7 @@ professoresRoutes.use(autenticadorTokenJwt);
 
 const ROTAS = {
     ALUNOS: "/alunos",
+    ALUNOS_ID: "/alunos/:id",
     PROFESSORES: "/professores",
     ALUNO_ID: "/aluno/:id",
     PROFESSORES_ID: "/professor/:id",
@@ -15,6 +16,7 @@ const ROTAS = {
    };
 
 professoresRoutes.get(ROTAS.ALUNOS,ProfessorController.ListarAlunos);
+professoresRoutes.get(ROTAS.ALUNOS_ID,ProfessorController.ListarAlunoPorID);
 professoresRoutes.post(ROTAS.ALUNOS,ProfessorController.CadastrarAlunos);
 professoresRoutes.get(ROTAS.PROFESSORES,ProfessorController.ListarProfessores);
 professoresRoutes.post(ROTAS.PROFESSORES,ProfessorController.CadastrarProfessores);
