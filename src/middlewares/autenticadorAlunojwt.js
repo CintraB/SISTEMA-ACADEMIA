@@ -15,14 +15,14 @@ async function autenticadorTokenAlunoJwt(req, res, next) {
         const { cpf, nome } = decode(token);
 
         // Consultar o banco de dados para verificar se o usuário é aluno
-        const query = "SELECT aluno FROM usuario WHERE cpf = $1 AND nome = $2";
+        const query = "SELECT aluno,id FROM usuario WHERE cpf = $1 AND nome = $2";
         const { rows } = await pool.query(query, [cpf, nome]);
 
         if (rows.length === 0 || !rows[0].aluno) {
             return res.status(403).json({ message: 'Acesso negado. Usuário não é um aluno' });
         }
 
-        //req.usuario = rows[0]; // Anexa o usuário encontrado ao objeto req para uso posterior
+        req.usuario = rows[0].id; // Anexa o usuário encontrado ao objeto req para uso posterior
         
         return next();
     } catch (error) {

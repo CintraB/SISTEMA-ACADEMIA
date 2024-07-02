@@ -6,17 +6,19 @@ const { decode } = jwt;
 class AlunoController {
     static ListarExercicio = async (req, res) => {
         try {
-            const token = req.headers.authorization?.split(" ")[1];
-            const segredo = process.env.TOKEN_SEG;
-            jwt.verify(token, segredo);
-            const { cpf, nome, titulo, aluno, professor } = decode(token);
-            //pegar o ID
-            const query = "SELECT id FROM usuario WHERE cpf = $1";
-            const {rows} = await pool.query(query,[cpf]);
-            const id_usuario = rows[0].id;
+            //req.usuario ID passado pelo validador JWT 
+            //mostrar quando treino foi criado.
+            const query_treino_criado = "SELECT * FROM treino WHERE id_aluno = $1 AND ativo = true;";
+            const valores_treino_criado = [req.usuario];
+            const result = await pool.query(query_treino_criado,valores_treino_criado);
 
-            const querytreino = "SELECT * FROM treino WHERE id = $1";
+            //mostrar treino atual ativo
+            const query_treino_atual = "SELECT eu.id_exercicio, eu.numero_serie, eu.carga, eu.repeticoes, eu.observacao_ex_usuario, e.nome_exercicio FROM ex_usuario eu JOIN exercicio e ON eu.id_exercicio = e.id_exercicio WHERE eu.id_user = $1 AND eu.ativo = true;";
+            const valores_treino_atual = [req.usuario];
+            const result_ativo = await pool.query(query_treino_atual,valores_treino_atual);
+            const treino_atual = result_ativo.rows;
 
+            res.status(200).json({treino: result.rows,treino_atual});
         } catch (error) {
             res.status(500).json(error);
         }
