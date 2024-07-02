@@ -1,4 +1,4 @@
-# SISTEMA-ACADEMIA
+# GYM-SYS
 
 
 Esta é uma aplicação de API RESTful em Node.js que utiliza Express e PostgreSQL para gerenciar uma aplicação de controle de treinos e alunos em uma academia.
