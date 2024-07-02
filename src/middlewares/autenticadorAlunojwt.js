@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { decode } = jwt;
 const pool = require('../config/dbConnect.js');
 
-async function autenticadorTokenJwt(req, res, next) {
+async function autenticadorTokenAlunoJwt(req, res, next) {
     const token = req.headers.authorization?.split(" ")[1];
     const segredo = process.env.TOKEN_SEG;
 
@@ -14,12 +14,12 @@ async function autenticadorTokenJwt(req, res, next) {
         jwt.verify(token, segredo);
         const { cpf, nome } = decode(token);
 
-        // Consultar o banco de dados para verificar se o usuário é professor
-        const query = "SELECT professor FROM usuario WHERE cpf = $1 AND nome = $2";
+        // Consultar o banco de dados para verificar se o usuário é aluno
+        const query = "SELECT aluno FROM usuario WHERE cpf = $1 AND nome = $2";
         const { rows } = await pool.query(query, [cpf, nome]);
 
-        if (rows.length === 0 || !rows[0].professor) {
-            return res.status(403).json({ message: 'Acesso negado. Usuário não é um professor' });
+        if (rows.length === 0 || !rows[0].aluno) {
+            return res.status(403).json({ message: 'Acesso negado. Usuário não é um aluno' });
         }
 
         //req.usuario = rows[0]; // Anexa o usuário encontrado ao objeto req para uso posterior
@@ -30,4 +30,4 @@ async function autenticadorTokenJwt(req, res, next) {
     }
 };
 
-module.exports = autenticadorTokenJwt;
+module.exports = autenticadorTokenAlunoJwt;

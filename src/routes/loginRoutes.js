@@ -6,6 +6,6 @@ const ROTAS = {
     LOGAR: "/login"
    };
 
-loginRoutes.get(ROTAS.LOGAR,LoginController.Logar);
+loginRoutes.post(ROTAS.LOGAR,LoginController.Logar);
 
 module.exports = loginRoutes;
