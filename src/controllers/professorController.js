@@ -25,7 +25,24 @@ class ProfessorController {
             if(result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].aluno == true){
                 res.status(200).json(result.rows[0]);
             }else{
-                res.status(404).json({message: 'Usuário não encontrado ou inativo'});
+                res.status(404).json({message: 'Aluno não encontrado ou inativo'});
+            }
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
+    static ListarProfessorPorID = async (req,res) =>{
+        try {
+            const id = req.params.id;
+            const query_verifica = 'SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE id = $1;'
+            const valores = [id];
+            const result = await pool.query(query_verifica,valores);
+            
+            if(result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].professor == true){
+                res.status(200).json(result.rows[0]);
+            }else{
+                res.status(404).json({message: 'Professor não encontrado ou inativo'});
             }
         } catch (error) {
             res.status(500).json(error);

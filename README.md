@@ -72,8 +72,10 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - GET /alunos/meutreino - Obtém o treino do aluno logado.
   - **Professor**
     - GET /professores/alunos - Obtém todos os alunos cadastrados.
+    - GET /professores/aluno/:id - Obtém aluno por ID.
     - POST /professores/alunos - Realiza o cadastro de um aluno no sistema.
     - GET /professores/professores - Obtém todos professores cadastrados no sistema.
+    - GET /professores/professor/:id - Obtém professor por ID.
     - POST /professores/professores - Realiza o cadastro de um professor no sistema.
     - POST /professores/treino - Realiza o cadastro de um treino no sistema.
     - GET /professores/exercicios - Obtém todos exercícios cadastrados no sistema.
@@ -110,7 +112,9 @@ Exemplo Json para realizar o login.
 | VERBO | URL |
 |----------|----------|
 |GET| http://localhost:3000/professores/alunos |
+|GET| http://localhost:3000/professores/alunos/:id |
 |GET| http://localhost:3000/professores/professores |
+|GET| http://localhost:3000/professores/professores/:id |
 |GET| http://localhost:3000/professores/exercicios |
 |POST| http://localhost:3000/professores/alunos |
 |POST| http://localhost:3000/professores/professores |
