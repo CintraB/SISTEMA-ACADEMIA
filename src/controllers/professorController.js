@@ -6,43 +6,85 @@ class ProfessorController {
 
     static ListarAlunos = async (req, res) => {
         try {
-                //console.log("Iniciando a consulta...");
-                const result = await pool.query("SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE aluno = TRUE;");
-                //console.log("Consulta executada com sucesso", result.rows);
-                res.status(200).json(result.rows);
+            //mostrar alunos ativos
+            const result = await pool.query("SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE aluno = TRUE AND ativo = true;");
+            res.status(200).json(result.rows);
         } catch (error) {
             res.status(500).json(error);
         }
     }
 
-    static ListarAlunoPorID = async (req,res) =>{
+    static ListarAlunoPorID = async (req, res) => {
         try {
             const id = req.params.id;
             const query_verifica = 'SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE id = $1;'
             const valores = [id];
-            const result = await pool.query(query_verifica,valores);
-            
-            if(result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].aluno == true){
+            const result = await pool.query(query_verifica, valores);
+
+            if (result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].aluno == true) {
                 res.status(200).json(result.rows[0]);
-            }else{
-                res.status(404).json({message: 'Aluno não encontrado ou inativo'});
+            } else {
+                res.status(404).json({ message: 'Aluno não encontrado ou inativo' });
             }
         } catch (error) {
             res.status(500).json(error);
         }
     }
 
-    static ListarProfessorPorID = async (req,res) =>{
+    static DesativarUsuario = async (req, res) => {
+        try {
+            const valores_usuario = [req.body.cpf];
+            const verifica = await verifica_existencia_usuario(valores_usuario); //se existe retorna falso
+            const [cpf] = valores_usuario;
+            if (verifica == false) {
+                const query = 'UPDATE usuario SET ativo = false WHERE cpf = $1;';
+                const valores = [cpf];
+                await pool.query(query, valores);
+                const query_dados = 'SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE cpf = $1;'
+                const dados = await pool.query(query_dados,valores);
+
+                res.status(200).json({ message: 'Usuário alterado para inativo', dados: dados.rows});
+            } else {
+                res.status(400).json({ message: "Usuario inativo ou inexistente" });
+            }
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
+    static ReativarUsuario = async (req, res) => {
+        try {
+            const valores_usuario = [req.body.cpf];
+            const verifica = await verifica_existencia_usuario_inativo(valores_usuario);
+            const [cpf] = valores_usuario;
+            if (verifica) {
+                const query = 'UPDATE usuario SET ativo = true WHERE cpf = $1;';
+                const valores = [cpf];
+                await pool.query(query, valores);
+                const query_dados = 'SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE cpf = $1;'
+                const dados = await pool.query(query_dados,valores);
+
+                res.status(200).json({ message: 'Usuário alterado para ativo', dados: dados.rows});
+            } else {
+                res.status(400).json({ message: "Usuario não encontrado" });
+            }
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
+    static ListarProfessorPorID = async (req, res) => {
         try {
             const id = req.params.id;
             const query_verifica = 'SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE id = $1;'
             const valores = [id];
-            const result = await pool.query(query_verifica,valores);
-            
-            if(result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].professor == true){
+            const result = await pool.query(query_verifica, valores);
+
+            if (result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].professor == true) {
                 res.status(200).json(result.rows[0]);
-            }else{
-                res.status(404).json({message: 'Professor não encontrado ou inativo'});
+            } else {
+                res.status(404).json({ message: 'Professor não encontrado ou inativo' });
             }
         } catch (error) {
             res.status(500).json(error);
@@ -244,6 +286,21 @@ async function verifica_existencia_usuario(dados_usuario) {
 
 
     if (result.rows.length > 0) {
+
+        return false;
+    } else {
+
+        return true;
+    }
+}
+
+async function verifica_existencia_usuario_inativo(dados_usuario) {
+    const [cpf] = dados_usuario;
+    const query = 'SELECT nome,cpf,titulo FROM usuario WHERE ativo = FALSE AND cpf = $1';
+    const values = [cpf];
+    const result = await pool.query(query, values);
+
+    if (result.rows.length == 0) {
 
         return false;
     } else {

@@ -74,6 +74,8 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - GET /professores/alunos - Obtém todos os alunos cadastrados.
     - GET /professores/aluno/:id - Obtém aluno por ID.
     - POST /professores/alunos - Realiza o cadastro de um aluno no sistema.
+    - PUT /professores/alunos/desativar - Desativar cadastro de usuario.
+    - PUT /professores//alunos/reativar - Reativar cadastro de usuario.
     - GET /professores/professores - Obtém todos professores cadastrados no sistema.
     - GET /professores/professor/:id - Obtém professor por ID.
     - POST /professores/professores - Realiza o cadastro de um professor no sistema.
@@ -119,6 +121,8 @@ Exemplo Json para realizar o login.
 |POST| http://localhost:3000/professores/alunos |
 |POST| http://localhost:3000/professores/professores |
 |POST| http://localhost:3000/professores/treino |
+|PUT| http://localhost:3000/professores/alunos/desativar |
+|PUT| http://localhost:3000/professores/alunos/reativar |
 
 
 Exemplo Json para cadastrar aluno.
@@ -168,6 +172,14 @@ Exemplo Json para cadastrar treino.
     ]
 }
 ```
+
+Exemplo Json para desativar ou reativar usuario.
+```plaintext
+{
+    "cpf":"88888888888"
+}
+```
+
 - **Estrutura de Arquivos**
   - server.js: Arquivo de entrada da aplicação.
   - app.js: Configuração do aplicativo Express.
