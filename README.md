@@ -73,6 +73,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
   - **Professor**
     - GET /professores/alunos - Obtém todos os alunos cadastrados.
     - GET /professores/aluno/:id - Obtém aluno por ID.
+    - POST /professores/aluno/cpfoutitulo - Obtém aluno por consulta de CPF ou titulo.
     - POST /professores/alunos - Realiza o cadastro de um aluno no sistema.
     - PUT /professores/alunos/desativar - Desativar cadastro de usuario.
     - PUT /professores//alunos/reativar - Reativar cadastro de usuario.
@@ -119,6 +120,7 @@ Exemplo Json para realizar o login.
 |GET| http://localhost:3000/professores/professores/:id |
 |GET| http://localhost:3000/professores/exercicios |
 |POST| http://localhost:3000/professores/alunos |
+|POST| http://localhost:3000/professores/aluno/cpfoutitulo |
 |POST| http://localhost:3000/professores/professores |
 |POST| http://localhost:3000/professores/treino |
 |PUT| http://localhost:3000/professores/alunos/desativar |
@@ -177,6 +179,14 @@ Exemplo Json para desativar ou reativar usuario.
 ```plaintext
 {
     "cpf":"88888888888"
+}
+```
+
+Exemplo Json para procurar aluno por cpf ou titulo.
+```plaintext
+{
+    "cpf": "88888888888",
+    "titulo": "666666666666"
 }
 ```
 
