@@ -31,7 +31,7 @@ class ProfessorController {
         }
     }
 
-    static ListarAlunoPorCPFouTitulo = async (req, res) => {
+    static ListarUsuarioPorCPFouTitulo = async (req, res) => {
         try {
             const cpf = req.body.cpf;
             const titulo = req.body.titulo;
