@@ -75,6 +75,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - GET /professores/aluno/:id - Obtém aluno por ID.
     - POST /professores/usuario/cpfoutitulo - Obtém usuario por consulta de CPF ou titulo.
     - POST /professores/alunos - Realiza o cadastro de um aluno no sistema.
+    - PUT /professores/aluno/:id - Altera cadastro de aluno no sistema.
     - PUT /professores/alunos/desativar - Desativar cadastro de usuario.
     - PUT /professores//alunos/reativar - Reativar cadastro de usuario.
     - GET /professores/professores - Obtém todos professores cadastrados no sistema.
@@ -125,6 +126,7 @@ Exemplo Json para realizar o login.
 |POST| http://localhost:3000/professores/treino |
 |PUT| http://localhost:3000/professores/alunos/desativar |
 |PUT| http://localhost:3000/professores/alunos/reativar |
+|PUT| http://localhost:3000/professores/aluno/:id |
 
 
 Exemplo Json para cadastrar aluno.
@@ -138,6 +140,15 @@ Exemplo Json para cadastrar aluno.
 }
 ```
 
+Exemplo Json para alterar aluno.
+```plaintext
+{
+    "cpf":"99999999999",
+    "nome":"joao",
+    "email":"email@email.com",
+    "titulo":"555555555555"
+}
+```
 
 Exemplo Json para cadastrar professor.
 ```plaintext

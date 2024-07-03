@@ -201,7 +201,7 @@ class ProfessorController {
                 WHERE id = $${index} AND ativo = true AND aluno = true
                 RETURNING id, nome, cpf, email, titulo, aluno, professor;
             `;
-            console.log(query,valores);
+
             // Executar a consulta no banco de dados
             const result = await pool.query(query, valores);
 
