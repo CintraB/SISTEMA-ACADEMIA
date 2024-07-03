@@ -19,8 +19,9 @@ const ROTAS = {
    };
 
 professoresRoutes.get(ROTAS.ALUNOS,ProfessorController.ListarAlunos);
-professoresRoutes.get(ROTAS.ALUNO_ID,ProfessorController.ListarAlunoPorID);
 professoresRoutes.post(ROTAS.ALUNOS,ProfessorController.CadastrarAlunos);
+professoresRoutes.get(ROTAS.ALUNO_ID,ProfessorController.ListarAlunoPorID);
+professoresRoutes.put(ROTAS.ALUNO_ID,ProfessorController.AlterarAluno);
 professoresRoutes.put(ROTAS.ALUNO_INATIVAR,ProfessorController.DesativarUsuario);
 professoresRoutes.put(ROTAS.ALUNO_REATIVAR,ProfessorController.ReativarUsuario);
 professoresRoutes.get(ROTAS.PROFESSORES,ProfessorController.ListarProfessores);

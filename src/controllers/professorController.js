@@ -155,6 +155,68 @@ class ProfessorController {
         }
     }
 
+    static AlterarAluno = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const { cpf, nome, email, titulo } = req.body;
+
+            // Verificar se os valores estão presentes e não são nulos ou vazios
+            let updates = [];
+            let valores = [];
+            let index = 1;
+
+            if (cpf) {
+                updates.push(`cpf = $${index}`);
+                valores.push(cpf);
+                index++;
+            }
+            if (nome) {
+                updates.push(`nome = $${index}`);
+                valores.push(nome);
+                index++;
+            }
+            if (email) {
+                updates.push(`email = $${index}`);
+                valores.push(email);
+                index++;
+            }
+            if (titulo) {
+                updates.push(`titulo = $${index}`);
+                valores.push(titulo);
+                index++;
+            }
+
+            // Se não houver campos para atualizar, retorne um erro
+            if (updates.length === 0) {
+                return res.status(400).json({ error: 'Nenhum dado para atualizar' });
+            }
+
+            // Adicionar o ID ao final dos valores
+            valores.push(id);
+
+            // Construir a consulta SQL dinamicamente
+            const query = `
+                UPDATE usuario
+                SET ${updates.join(', ')}
+                WHERE id = $${index} AND ativo = true AND aluno = true
+                RETURNING id, nome, cpf, email, titulo, aluno, professor;
+            `;
+            console.log(query,valores);
+            // Executar a consulta no banco de dados
+            const result = await pool.query(query, valores);
+
+            // Verificar se o usuário foi encontrado e atualizado
+            if (result.rows.length > 0) {
+                res.status(200).json({ message: 'Dados do aluno alterados com sucesso', dados: result.rows[0] });
+            } else {
+                res.status(404).json({ message: 'Aluno não encontrado' });
+            }
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
     static CadastrarProfessores = async (req, res) => {
         try {
             //INSERT INTO usuario(cpf,nome,senha,email,titulo,aluno,professor,ativo)
