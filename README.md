@@ -77,7 +77,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - POST /professores/alunos - Realiza o cadastro de um aluno no sistema.
     - PUT /professores/aluno/:id - Altera cadastro de aluno no sistema.
     - PUT /professores/alunos/desativar - Desativar cadastro de usuario.
-    - PUT /professores//alunos/reativar - Reativar cadastro de usuario.
+    - PUT /professores/alunos/reativar - Reativar cadastro de usuario.
     - GET /professores/professores - Obtém todos professores cadastrados no sistema.
     - GET /professores/professor/:id - Obtém professor por ID.
     - POST /professores/professores - Realiza o cadastro de um professor no sistema.
