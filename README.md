@@ -82,6 +82,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - GET /professores/professor/:id - Obtém professor por ID.
     - POST /professores/professores - Realiza o cadastro de um professor no sistema.
     - POST /professores/treino - Realiza o cadastro de um treino no sistema.
+    - GET /professores/treino/inativar/:id - Inativa todos treinos do aluno no sistema.
     - GET /professores/exercicios - Obtém todos exercícios cadastrados no sistema.
 
 
@@ -120,6 +121,7 @@ Exemplo Json para realizar o login.
 |GET| http://localhost:3000/professores/professores |
 |GET| http://localhost:3000/professores/professores/:id |
 |GET| http://localhost:3000/professores/exercicios |
+|GET| http://localhost:3000/professores/treino/inativar/:id |
 |POST| http://localhost:3000/professores/alunos |
 |POST| http://localhost:3000/professores/usuario/cpfoutitulo |
 |POST| http://localhost:3000/professores/professores |

@@ -334,6 +334,40 @@ class ProfessorController {
             client.release();
         }
     }
+
+    static InativarTreino = async (req,res) => {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+
+            const id = req.params.id;
+            const query_verifica = 'SELECT id, nome, cpf, email, titulo, aluno, professor, ativo FROM usuario WHERE id = $1 AND ativo = true;'
+            const valores = [id];
+            const result = await client.query(query_verifica, valores);
+
+            if (result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].aluno == true) {
+                const query_tabela_treino = 'UPDATE treino SET ativo = false WHERE id_aluno = $1 AND ativo = true;';
+                const valor_treino = [id];
+                await client.query(query_tabela_treino,valor_treino);
+
+                const query_tabela_exusuario = 'UPDATE ex_usuario SET ativo = false WHERE id_user = $1 AND ativo = true;';
+                const valor_tabela_exusuario = [id];
+                await client.query(query_tabela_exusuario,valor_tabela_exusuario);
+
+                await client.query('COMMIT');
+                res.status(200).json({ message: "Treino inativado com sucesso" });
+            } else {
+                await client.query('ROLLBACK');
+                res.status(404).json({ message: 'Aluno não encontrado ou inativo' });
+            }
+
+        } catch (error) {
+            await client.query('ROLLBACK');
+            res.status(500).json(error);
+        } finally {
+            client.release();
+        }
+    }
 }
 
 async function validar_usuario(dados_usuario) {
