@@ -6,10 +6,12 @@ const alunosRoutes = express.Router();
 alunosRoutes.use(autenticadorTokenAlunoJwt);
 
 const ROTAS = {
-    TREINO: "/meutreino"
+    TREINO: "/meutreino",
+    PEDIDO: "/pedidotreino"
 }
 
 alunosRoutes.get(ROTAS.TREINO,AlunosController.ListarExercicio);
+alunosRoutes.post(ROTAS.PEDIDO,AlunosController.PedirNovoTreino);
 
 
 

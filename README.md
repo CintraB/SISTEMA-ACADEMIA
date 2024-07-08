@@ -70,6 +70,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - POST /login - Obtém retorno e token JWT válido para navegação no sistema.
   - **Aluno**
     - GET /alunos/meutreino - Obtém o treino do aluno logado.
+    - POST /alunos/pedidotreino - Solicitar novo treino. 
   - **Professor**
     - GET /professores/alunos - Obtém todos os alunos cadastrados.
     - GET /professores/aluno/:id - Obtém aluno por ID.
@@ -110,7 +111,16 @@ Exemplo Json para realizar o login.
 | VERBO | URL |
 |----------|----------|
 |GET| http://localhost:3000/alunos/meutreino |
+|POST| http://localhost:3000/alunos/pedidotreino |
 
+- O usuário é retirado do token JWT conforme login realizado pelo aluno.
+
+Exemplo Json para realizar pedido de novo treino.
+```plaintext
+{
+    "observacao": "machucado na patela (joelho esquerdo)"
+}
+```
 
 **Tabela Professor**
 
