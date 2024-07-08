@@ -85,6 +85,8 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
     - POST /professores/treino - Realiza o cadastro de um treino no sistema.
     - GET /professores/treino/inativar/:id - Inativa todos treinos do aluno no sistema.
     - GET /professores/treino/reativar/:id - Reativa todos treinos do aluno no sistema.
+    - GET /professores/treino/pedidos - Lista todos pedidos de treino no sistema.
+    - POST /professores/treino/pedido/finalizado - Marca como finalizado um pedido para novo treino.
     - GET /professores/exercicios - Obtém todos exercícios cadastrados no sistema.
 
 
@@ -134,10 +136,12 @@ Exemplo Json para realizar pedido de novo treino.
 |GET| http://localhost:3000/professores/exercicios |
 |GET| http://localhost:3000/professores/treino/inativar/:id |
 |GET| http://localhost:3000/professores/treino/reativar/:id |
+|GET| http://localhost:3000/professores/treino/pedidos |
 |POST| http://localhost:3000/professores/alunos |
 |POST| http://localhost:3000/professores/usuario/cpfoutitulo |
 |POST| http://localhost:3000/professores/professores |
 |POST| http://localhost:3000/professores/treino |
+|POST| http://localhost:3000/professores/treino/pedido/finalizado |
 |PUT| http://localhost:3000/professores/alunos/desativar |
 |PUT| http://localhost:3000/professores/alunos/reativar |
 |PUT| http://localhost:3000/professores/aluno/:id |
@@ -197,6 +201,12 @@ Exemplo Json para cadastrar treino.
             "observacao_ex_usuario": "pegada media"
         }
     ]
+}
+```
+Exemplo Json para marcar pedido de treino como finalizado.
+```plaintext
+{
+    "id_pedido": "3"
 }
 ```
 

@@ -15,6 +15,8 @@ const ROTAS = {
     ALUNO_ID: "/aluno/:id",
     PROFESSORES_ID: "/professor/:id",
     TREINO: "/treino",
+    PEDIDOS_TREINO: "/treino/pedidos",
+    PEDIDO_TREINO_FINALIZADO: "/treino/pedido/finalizado",
     INATIVAR_TREINO: "/treino/inativar/:id",
     REATIVAR_TREINO: "/treino/reativar/:id",
     EXERCICIOS: "/exercicios"
@@ -32,6 +34,8 @@ professoresRoutes.post(ROTAS.PROFESSORES,ProfessorController.CadastrarProfessore
 professoresRoutes.post(ROTAS.USUARIO_CPF_TITULO,ProfessorController.ListarUsuarioPorCPFouTitulo);
 professoresRoutes.get(ROTAS.INATIVAR_TREINO,ProfessorController.InativarTreino);
 professoresRoutes.get(ROTAS.REATIVAR_TREINO,ProfessorController.ReativarTreino);
+professoresRoutes.get(ROTAS.PEDIDOS_TREINO,ProfessorController.ListarPedidosDeTreino);
+professoresRoutes.post(ROTAS.PEDIDO_TREINO_FINALIZADO,ProfessorController.PedidoDeTreino);
 professoresRoutes.post(ROTAS.TREINO,ProfessorController.CadastrarTreino);
 professoresRoutes.get(ROTAS.EXERCICIOS,ProfessorController.ListarExercicios);
 

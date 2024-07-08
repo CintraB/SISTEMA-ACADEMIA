@@ -69,11 +69,11 @@ class ProfessorController {
                 //inativando treinos
                 const query_treino = 'UPDATE treino SET ativo = false WHERE id_aluno = $1;';
                 const id = [dados.rows[0].id];
-                await pool.query(query_treino,id);
+                await pool.query(query_treino, id);
 
                 //inativando tabela ex
                 const query_ex = 'UPDATE ex_usuario SET ativo = false WHERE id_user = $1';
-                await pool.query(query_ex,id);
+                await pool.query(query_ex, id);
 
                 res.status(200).json({ message: 'Usuário alterado para inativo', dados: dados.rows });
             } else {
@@ -344,7 +344,7 @@ class ProfessorController {
         }
     }
 
-    static InativarTreino = async (req,res) => {
+    static InativarTreino = async (req, res) => {
         const client = await pool.connect();
         try {
             await client.query('BEGIN');
@@ -357,11 +357,11 @@ class ProfessorController {
             if (result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].aluno == true) {
                 const query_tabela_treino = 'UPDATE treino SET ativo = false WHERE id_aluno = $1 AND ativo = true;';
                 const valor_treino = [id];
-                await client.query(query_tabela_treino,valor_treino);
+                await client.query(query_tabela_treino, valor_treino);
 
                 const query_tabela_exusuario = 'UPDATE ex_usuario SET ativo = false WHERE id_user = $1 AND ativo = true;';
                 const valor_tabela_exusuario = [id];
-                await client.query(query_tabela_exusuario,valor_tabela_exusuario);
+                await client.query(query_tabela_exusuario, valor_tabela_exusuario);
 
                 await client.query('COMMIT');
                 res.status(200).json({ message: "Treino inativado com sucesso" });
@@ -378,7 +378,7 @@ class ProfessorController {
         }
     }
 
-    static ReativarTreino = async (req,res) => {
+    static ReativarTreino = async (req, res) => {
         const client = await pool.connect();
         try {
             await client.query('BEGIN');
@@ -391,11 +391,11 @@ class ProfessorController {
             if (result.rows.length > 0 && result.rows[0].ativo == true && result.rows[0].aluno == true) {
                 const query_tabela_treino = 'UPDATE treino SET ativo = true WHERE id_aluno = $1;';
                 const valor_treino = [id];
-                await client.query(query_tabela_treino,valor_treino);
+                await client.query(query_tabela_treino, valor_treino);
 
                 const query_tabela_exusuario = 'UPDATE ex_usuario SET ativo = true WHERE id_user = $1;';
                 const valor_tabela_exusuario = [id];
-                await client.query(query_tabela_exusuario,valor_tabela_exusuario);
+                await client.query(query_tabela_exusuario, valor_tabela_exusuario);
 
                 await client.query('COMMIT');
                 res.status(200).json({ message: "Treino reativado com sucesso" });
@@ -405,9 +405,39 @@ class ProfessorController {
             }
         } catch (error) {
             await client.query('ROLLBACK');
-            res.status(500).json(error); 
+            res.status(500).json(error);
         } finally {
             client.release();
+        }
+    }
+
+    static PedidoDeTreino = async (req, res) => {
+        //marcar pedido de treino como concluído
+        const id_pedido = req.body.id_pedido;
+        
+        const query = 'SELECT * FROM pedido_treino WHERE ativo = true AND id_pedido = $1;';
+        const result = await pool.query(query,[id_pedido]);
+
+        if(result.rows.length > 0){
+            const query_treino = 'UPDATE pedido_treino SET ativo = false WHERE id_pedido = $1;';
+            await pool.query(query_treino,[id_pedido]);
+
+            res.status(200).json({ message: 'Pedido finalizado com sucesso.'});
+        }else{
+            res.status(404).json({ message: 'Pedido não encontrado ou já finalizado.' });
+        }
+
+
+    }
+
+    static ListarPedidosDeTreino = async (req, res) => {
+        try {
+            const query = 'SELECT * FROM pedido_treino WHERE ativo = true;';
+            const result = await pool.query(query);
+
+            res.status(200).json(result.rows);
+        } catch (error) {
+            res.status(500).json(error);
         }
     }
 }
