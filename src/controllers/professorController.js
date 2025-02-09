@@ -149,9 +149,24 @@ class ProfessorController {
                     const query = 'INSERT INTO usuario(cpf,nome,senha,email,titulo) VALUES ($1,$2,$3,$4,$5);';
                     const values = [cpf, nome, hashSenha, email, titulo];
 
-                    const result = await pool.query(query, values);
+                await pool.query(query, values);
 
-                    res.status(200).json({ message: "Usuario cadastrado com sucesso" });
+                //Pegar ID do professor que fez o cadastro e registrar no banco de dados na coluna atualizado_por
+                const token = req.headers.authorization?.split(" ")[1];
+                const ID_PESSOA = await retira_dados_jwt(token); //ID do professor que realizou o cadastro
+                
+                //Pegar ID do cadastro que acabou de ser realizado
+                const query_cadastro = 'SELECT ID FROM usuario WHERE CPF = $1';
+                const ID_NOVO_CADASTRO = await pool.query(query_cadastro,[cpf]);
+                
+                const insert_modificacao_id = `
+                UPDATE usuario 
+                SET atualizado_por = $2 
+                WHERE id = $1;`;
+
+                await pool.query(insert_modificacao_id, [ID_NOVO_CADASTRO.rows[0].id, ID_PESSOA]); //UPDATE no banco quem fez o cadastro.
+
+                    res.status(200).json({ message: "Aluno cadastrado com sucesso" });
                 } else {
                     res.status(400).json({ error: 'Usuario ja cadastrado' });
                 }
@@ -255,7 +270,7 @@ class ProfessorController {
                     const query = 'INSERT INTO usuario(cpf,nome,senha,email,titulo,aluno,professor,ativo) VALUES ($1,$2,$3,$4,$5,$6,$7,$8);';
                     const values = [cpf, nome, hashSenha, email, titulo, aln, prof, atv];
 
-                    await pool.query(query, values);
+                await pool.query(query, values);
 
                 //Pegar ID do professor que fez o cadastro e registrar no banco de dados na coluna atualizado_por
                 const token = req.headers.authorization?.split(" ")[1];
