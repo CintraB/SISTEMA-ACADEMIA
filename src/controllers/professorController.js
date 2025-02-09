@@ -1,6 +1,8 @@
 const { query } = require("express");
 const pool = require("../config/dbConnect.js");
 const criarHashComSal = require("../middlewares/HashcomSal.js");
+const jwt = require('jsonwebtoken');
+const { decode } = jwt;
 
 class ProfessorController {
 
@@ -214,6 +216,17 @@ class ProfessorController {
             // Executar a consulta no banco de dados
             const result = await pool.query(query, valores);
 
+            //Pegar ID do professor que fez alteração e registrar no banco de dados
+            const token = req.headers.authorization?.split(" ")[1];
+            let ID_PESSOA = await retira_dados_jwt(token);
+
+            const insert_modificacao_id = `
+            UPDATE usuario 
+            SET atualizado_por = $2 
+            WHERE id = $1;`;
+
+            await pool.query(insert_modificacao_id, [id, ID_PESSOA]);
+
             // Verificar se o usuário foi encontrado e atualizado
             if (result.rows.length > 0) {
                 res.status(200).json({ message: 'Dados do aluno alterados com sucesso', dados: result.rows[0] });
@@ -414,16 +427,16 @@ class ProfessorController {
     static PedidoDeTreino = async (req, res) => {
         //marcar pedido de treino como concluído
         const id_pedido = req.body.id_pedido;
-        
+
         const query = 'SELECT * FROM pedido_treino WHERE ativo = true AND id_pedido = $1;';
-        const result = await pool.query(query,[id_pedido]);
+        const result = await pool.query(query, [id_pedido]);
 
-        if(result.rows.length > 0){
+        if (result.rows.length > 0) {
             const query_treino = 'UPDATE pedido_treino SET ativo = false WHERE id_pedido = $1;';
-            await pool.query(query_treino,[id_pedido]);
+            await pool.query(query_treino, [id_pedido]);
 
-            res.status(200).json({ message: 'Pedido finalizado com sucesso.'});
-        }else{
+            res.status(200).json({ message: 'Pedido finalizado com sucesso.' });
+        } else {
             res.status(404).json({ message: 'Pedido não encontrado ou já finalizado.' });
         }
 
@@ -500,5 +513,26 @@ async function verifica_existencia_usuario_inativo(dados_usuario) {
     }
 }
 
+async function retira_dados_jwt(token) {
+
+    const segredo = process.env.TOKEN_SEG;
+
+    try {
+        jwt.verify(token, segredo);
+        const { cpf, nome, id } = decode(token);
+
+        // Consultar o banco de dados para verificar se o usuário é professor
+        const query = "SELECT professor FROM usuario WHERE cpf = $1 AND nome = $2";
+        const { rows } = await pool.query(query, [cpf, nome]);
+
+        if (rows.length === 0 || !rows[0].professor) {
+            return res.status(403).json({ message: 'Acesso negado. Usuário não é um professor' });
+        }
+
+        return id;
+    } catch (error) {
+        return res.status(401).json({ message: 'Falha ao autenticar o Token' });
+    }
+}
 
 module.exports = ProfessorController;
