@@ -549,11 +549,11 @@ async function retira_dados_jwt(token) {
 
     try {
         jwt.verify(token, segredo);
-        const { cpf, nome, id } = decode(token);
+        const { id } = decode(token);
 
         // Consultar o banco de dados para verificar se o usuário é professor
-        const query = "SELECT professor FROM usuario WHERE cpf = $1 AND nome = $2";
-        const { rows } = await pool.query(query, [cpf, nome]);
+        const query = "SELECT professor FROM usuario WHERE id = $1 AND ativo = TRUE";
+        const { rows } = await pool.query(query, [id]);
 
         if (rows.length === 0 || !rows[0].professor) {
             return res.status(403).json({ message: 'Acesso negado. Usuário não é um professor' });

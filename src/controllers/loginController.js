@@ -30,8 +30,6 @@ class LoginController {
                     //gerando payload do professor
                     const tokenPayload = {
                         id: rows[0].id,
-                        nome: rows[0].nome,
-                        cpf: rows[0].cpf,
                         professor: rows[0].professor,
                         ativo: rows[0].ativo
                     };
@@ -40,11 +38,7 @@ class LoginController {
 
                     usuarioEncontrado = {
                         id: rows[0].id,
-                        nome: rows[0].nome,
-                        cpf: rows[0].cpf,
-                        email: rows[0].email,
-                        titulo: rows[0].titulo,
-                        professor: rows[0].professor,
+                        cargo: "professor",
                         ativo: rows[0].ativo
                     };
 
@@ -54,8 +48,6 @@ class LoginController {
                 //gerando payload do aluno
                 const tokenPayload = {
                     id: rows[0].id,
-                    nome: rows[0].nome,
-                    cpf: rows[0].cpf,
                     aluno: rows[0].aluno,
                     ativo: rows[0].ativo
                 };
@@ -64,11 +56,7 @@ class LoginController {
 
                 usuarioEncontrado = {
                     id: rows[0].id,
-                    nome: rows[0].nome,
-                    cpf: rows[0].cpf,
-                    email: rows[0].email,
-                    titulo: rows[0].titulo,
-                    aluno: rows[0].aluno,
+                    cargo: "aluno",
                     ativo: rows[0].ativo
                 };
 
