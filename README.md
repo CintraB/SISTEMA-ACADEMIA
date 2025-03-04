@@ -28,13 +28,14 @@ Antes de executar o aplicativo, é necessário configurar as variáveis de ambie
 
 
 ```plaintext
-PORTA = 3000
+PORTA = 8080
 USER =
 HOST =
 DATABASE =
 PASSWORD =
 PORTA_DB = 5432
 TOKEN_SEG = a6d54962edf82134d8a0f731100cc9b1ea44bc31625f31727b76fe2b604c752983b0637c82a9536ced2bde1b16eea6bf80a53f2ad88cf98c795a5b83cb7c1470
+ENABLE_CORS=http://localhost:3000;https://www.google.com.br
 ```
 
 
@@ -254,3 +255,4 @@ Exemplo Json para procurar usuario por cpf ou titulo.
   - pg (node-postgres)
   - jsonwebtoken
   - bcrypt
+  - cors
