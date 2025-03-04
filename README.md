@@ -48,7 +48,7 @@ Execute o comando
 ```plaintext
 npm run dev
 ```
-O servidor estará acessível em http://localhost:3000.
+O servidor estará acessível em http://localhost:8080.
 
 
 Ao efetuar login será gerado um token JWT necessário para navegação no sistema.
@@ -96,7 +96,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwibm9tZSI6InR1aSBjb20gaGFzaCIsImN
 
 | VERBO | URL |
 |----------|----------|
-|POST| http://localhost:3000/login |
+|POST| http://localhost:8080/login |
 
 
 Exemplo Json para realizar o login.
@@ -113,8 +113,8 @@ Exemplo Json para realizar o login.
 
 | VERBO | URL |
 |----------|----------|
-|GET| http://localhost:3000/alunos/meutreino |
-|POST| http://localhost:3000/alunos/pedidotreino |
+|GET| http://localhost:8080/alunos/meutreino |
+|POST| http://localhost:8080/alunos/pedidotreino |
 
 - O usuário é retirado do token JWT conforme login realizado pelo aluno.
 
@@ -130,22 +130,22 @@ Exemplo Json para realizar pedido de novo treino.
 
 | VERBO | URL |
 |----------|----------|
-|GET| http://localhost:3000/professores/alunos |
-|GET| http://localhost:3000/professores/alunos/:id |
-|GET| http://localhost:3000/professores/professores |
-|GET| http://localhost:3000/professores/professores/:id |
-|GET| http://localhost:3000/professores/exercicios |
-|GET| http://localhost:3000/professores/treino/inativar/:id |
-|GET| http://localhost:3000/professores/treino/reativar/:id |
-|GET| http://localhost:3000/professores/treino/pedidos |
-|POST| http://localhost:3000/professores/alunos |
-|POST| http://localhost:3000/professores/usuario/cpfoutitulo |
-|POST| http://localhost:3000/professores/professores |
-|POST| http://localhost:3000/professores/treino |
-|POST| http://localhost:3000/professores/treino/pedido/finalizado |
-|PUT| http://localhost:3000/professores/alunos/desativar |
-|PUT| http://localhost:3000/professores/alunos/reativar |
-|PUT| http://localhost:3000/professores/aluno/:id |
+|GET| http://localhost:8080/professores/alunos |
+|GET| http://localhost:8080/professores/alunos/:id |
+|GET| http://localhost:8080/professores/professores |
+|GET| http://localhost:8080/professores/professores/:id |
+|GET| http://localhost:8080/professores/exercicios |
+|GET| http://localhost:8080/professores/treino/inativar/:id |
+|GET| http://localhost:8080/professores/treino/reativar/:id |
+|GET| http://localhost:8080/professores/treino/pedidos |
+|POST| http://localhost:8080/professores/alunos |
+|POST| http://localhost:8080/professores/usuario/cpfoutitulo |
+|POST| http://localhost:8080/professores/professores |
+|POST| http://localhost:8080/professores/treino |
+|POST| http://localhost:8080/professores/treino/pedido/finalizado |
+|PUT| http://localhost:8080/professores/alunos/desativar |
+|PUT| http://localhost:8080/professores/alunos/reativar |
+|PUT| http://localhost:8080/professores/aluno/:id |
 
 
 Exemplo Json para cadastrar aluno.
